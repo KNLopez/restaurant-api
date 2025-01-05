@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"github.com/yourusername/restaurant-api/internal/handler"
 	"github.com/yourusername/restaurant-api/internal/middleware"
 )
@@ -28,15 +29,18 @@ func NewRouter(
 		w.Write([]byte("OK"))
 	})
 
-	// User routes
+	// Swagger documentation
+	mux.HandleFunc("GET /swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"),
+	))
+
+	// API v1 routes
 	mux.HandleFunc("POST /api/v1/users", userHandler.Create)
 	mux.HandleFunc("GET /api/v1/users/{id}", userHandler.Get)
 
-	// Restaurant routes
 	mux.HandleFunc("POST /api/v1/restaurants", restaurantHandler.Create)
 	mux.HandleFunc("GET /api/v1/restaurants/{id}", restaurantHandler.Get)
 
-	// Menu routes
 	mux.HandleFunc("POST /api/v1/restaurants/{id}/menu-items", menuHandler.Create)
 	mux.HandleFunc("GET /api/v1/restaurants/{id}/menu-items", menuHandler.List)
 

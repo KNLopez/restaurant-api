@@ -13,6 +13,7 @@ type MenuItem struct {
 	Name         string    `json:"name" db:"name"`
 	Description  string    `json:"description" db:"description"`
 	Price        float64   `json:"price" db:"price"`
+	ImageURLs    []string  `json:"image_urls" db:"image_urls"`
 	CreatedAt    time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at" db:"updated_at"`
 }

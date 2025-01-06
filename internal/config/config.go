@@ -6,9 +6,15 @@ import (
 )
 
 type Config struct {
-	Server   ServerConfig
-	Database DatabaseConfig
-	Auth     AuthConfig
+	Server     ServerConfig
+	Database   DatabaseConfig
+	Auth       AuthConfig
+	BaseURL    string `env:"BASE_URL" envDefault:"http://localhost:8080"`
+	Cloudinary struct {
+		CloudName string `env:"CLOUDINARY_CLOUD_NAME"`
+		APIKey    string `env:"CLOUDINARY_API_KEY"`
+		APISecret string `env:"CLOUDINARY_API_SECRET"`
+	}
 }
 
 type ServerConfig struct {

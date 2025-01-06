@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
+	"github.com/KNLopez/restaurant-api/internal/models"
+	"github.com/KNLopez/restaurant-api/internal/repository"
 	"github.com/google/uuid"
-	"github.com/yourusername/restaurant-api/internal/models"
-	"github.com/yourusername/restaurant-api/internal/repository"
 )
 
 type UserService struct {

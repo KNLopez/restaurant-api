@@ -3,7 +3,7 @@ package postgres
 import (
 	"database/sql"
 
-	"github.com/yourusername/restaurant-api/internal/config"
+	"github.com/KNLopez/restaurant-api/internal/config"
 )
 
 func NewConnection(cfg config.DatabaseConfig) (*sql.DB, error) {

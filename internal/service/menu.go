@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
+	"github.com/KNLopez/restaurant-api/internal/models"
+	"github.com/KNLopez/restaurant-api/internal/repository"
 	"github.com/google/uuid"
-	"github.com/yourusername/restaurant-api/internal/models"
-	"github.com/yourusername/restaurant-api/internal/repository"
 )
 
 type MenuService struct {
@@ -24,4 +24,16 @@ func (s *MenuService) Create(ctx context.Context, item *models.MenuItem) error {
 
 func (s *MenuService) List(ctx context.Context, restaurantID uuid.UUID) ([]*models.MenuItem, error) {
 	return s.menuRepo.List(ctx, restaurantID)
+}
+
+func (s *MenuService) GetByID(ctx context.Context, id uuid.UUID) (*models.MenuItem, error) {
+	return s.menuRepo.GetByID(ctx, id)
+}
+
+func (s *MenuService) Update(ctx context.Context, item *models.MenuItem) error {
+	return s.menuRepo.Update(ctx, item)
+}
+
+func (s *MenuService) Delete(ctx context.Context, id uuid.UUID) error {
+	return s.menuRepo.Delete(ctx, id)
 }

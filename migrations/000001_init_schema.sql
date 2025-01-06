@@ -17,6 +17,7 @@ CREATE TABLE restaurants (
     description TEXT,
     manager_id UUID REFERENCES users(id),
     address TEXT,
+    logo_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -42,6 +43,7 @@ CREATE TABLE menu_items (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
+    image_urls TEXT[] DEFAULT '{}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -62,4 +64,17 @@ CREATE TABLE restaurant_tables (
     qr_code_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(restaurant_id, table_number)
+);
+
+CREATE TABLE tables (
+    id UUID PRIMARY KEY,
+    restaurant_id UUID NOT NULL REFERENCES restaurants(id),
+    number INTEGER NOT NULL,
+    capacity INTEGER NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    qr_code TEXT NOT NULL,
+    table_url TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    UNIQUE(restaurant_id, number)
 ); 

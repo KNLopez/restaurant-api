@@ -36,6 +36,7 @@ import (
 	"github.com/KNLopez/restaurant-api/internal/repository/postgres"
 	"github.com/KNLopez/restaurant-api/internal/router"
 	"github.com/KNLopez/restaurant-api/internal/service"
+	"github.com/KNLopez/restaurant-api/internal/utils"
 	_ "github.com/lib/pq"
 )
 
@@ -57,19 +58,35 @@ func main() {
 	userRepo := postgres.NewUserRepository(db)
 	restaurantRepo := postgres.NewRestaurantRepository(db)
 	menuRepo := postgres.NewMenuRepository(db)
+	orderRepo := postgres.NewOrderRepository(db)
+	tableRepo := postgres.NewTableRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)
 	restaurantService := service.NewRestaurantService(restaurantRepo)
 	menuService := service.NewMenuService(menuRepo)
+	orderService := service.NewOrderService(orderRepo)
+	tableService := service.NewTableService(tableRepo)
+
+	// Initialize Cloudinary
+	cloudinary, err := utils.NewCloudinaryService(
+		cfg.Cloudinary.CloudName,
+		cfg.Cloudinary.APIKey,
+		cfg.Cloudinary.APISecret,
+	)
+	if err != nil {
+		log.Fatal("failed to initialize cloudinary:", err)
+	}
 
 	// Initialize handlers
 	userHandler := handler.NewUserHandler(userService)
-	restaurantHandler := handler.NewRestaurantHandler(restaurantService)
-	menuHandler := handler.NewMenuHandler(menuService)
+	restaurantHandler := handler.NewRestaurantHandler(restaurantService, cloudinary)
+	menuHandler := handler.NewMenuHandler(menuService, cloudinary)
+	orderHandler := handler.NewOrderHandler(orderService)
+	tableHandler := handler.NewTableHandler(tableService, cfg)
 
 	// Setup router
-	router := router.NewRouter(userHandler, restaurantHandler, menuHandler)
+	router := router.NewRouter(userHandler, restaurantHandler, menuHandler, orderHandler, tableHandler)
 
 	// Create server
 	srv := &http.Server{
